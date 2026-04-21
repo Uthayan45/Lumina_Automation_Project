@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        jdk 'jdk-26'
+        jdk 'jdk-21'
         maven 'Maven3'
     }
 
@@ -25,6 +25,12 @@ pipeline {
     post {
         always {
             junit 'target/surefire-reports/*.xml'
+        }
+        success {
+            echo 'Tests passed'
+        }
+        failure {
+            echo 'Tests failed'
         }
     }
 }

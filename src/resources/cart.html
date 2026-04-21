@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | Lumina Store</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container" style="padding: 2rem;">
+        <h1>Your Cart</h1>
+        <table class="cart-table" id="cart-table">
+            <thead><tr><th>Product</th><th>Action</th></tr></thead>
+            <tbody id="cart-tbody"></tbody>
+        </table>
+        
+        <div style="margin-top: 2rem;">
+            <!-- Actions: Alerts -->
+            <button id="add-tip-btn" class="btn btn-outline">Add Custom Tip (Prompt)</button>
+            <p id="tip-amount" style="margin-top:1rem; font-weight:bold;"></p>
+            <br>
+            <button id="checkout-btn" class="btn btn-primary" onclick="window.location.href='checkout.html'">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        const cartItems = [{id:101, name: 'Lumina Echo Buds'}]; // Mock cart
+        
+        function renderBasicCart() {
+            const tbody = document.getElementById('cart-tbody');
+            tbody.innerHTML = '';
+            cartItems.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.name}</td>
+                    <td><button class="remove-btn" onclick="removeWithConfirm(${item.id})">Remove (Confirm)</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function removeWithConfirm(id) {
+            if(confirm("Are you sure you want to remove this item?")) {
+                alert("Item removed successfully!"); // Native alert
+                document.getElementById('cart-tbody').innerHTML = '<tr><td colspan="2">Cart is empty</td></tr>';
+            }
+        }
+
+        document.getElementById('add-tip-btn').addEventListener('click', () => {
+            let tip = prompt("Enter tip amount:");
+            if(tip !== null) {
+                document.getElementById('tip-amount').textContent = "Tip Added: $" + tip;
+            }
+        });
+
+        renderBasicCart();
+    </script>
+</body>
+</html>

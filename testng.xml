@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Lumina Test Suite">
+    <listeners>
+        <listener class-name="base.TestListener"/>
+    </listeners>
+    <test name="Cookie Accept Test">
+        <classes>
+            <class name="tests.CookieAcptTest"/>
+            <class name="tests.ShopNowTest"/>
+            <class name="tests.NavbarTest"/>
+            <class name="tests.ShopPageTest"/>
+            <class name="tests.LoginTest"/>
+            <class name="tests.FlowTest"/>
+        </classes>
+    </test>
+</suite>

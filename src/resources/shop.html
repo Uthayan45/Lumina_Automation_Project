@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop | Lumina Store</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .wishlist-zone { border: 2px dashed #0066cc; padding: 2rem; text-align: center; margin-top:2rem; background:#f4f4f5;}
+        .tooltip-text { display: none; background: #333; color: #fff; padding: 0.5rem; position: absolute; margin-top: -2rem; border-radius: 4px; }
+        .hover-trigger:hover .tooltip-text { display: block; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container" style="display:flex; justify-content:space-between; width:100%;">
+            <div class="nav-brand"><a href="index.html">Lumina.</a></div>
+            <ul class="nav-links">
+                <li><a href="shop.html" class="active">Shop</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="padding:2rem;">
+        
+        <!-- Actions: Hover & Double Click -->
+        <div style="display:flex; gap:2rem; margin-bottom:2rem; border-bottom:1px solid #ddd; padding-bottom:1rem;">
+            <div class="hover-trigger" id="hover-box" style="padding:1rem; background:#e5e7eb; cursor:help;">
+                Hover over me
+                <div class="tooltip-text" id="hover-tooltip">Special 20% discount unlocked!</div>
+            </div>
+            
+            <div id="double-click-box" style="padding:1rem; background:#ef4444; color:white; cursor:pointer;-webkit-user-select:none;">
+                Double click for Promo Code
+            </div>
+            <div id="promo-result" style="padding:1rem; font-weight:bold;"></div>
+        </div>
+
+        <div class="grid grid-cols-3" id="shop-grid">
+            <!-- JS will populate Draggable products -->
+        </div>
+
+        <!-- Actions: Drag and Drop -->
+        <div id="wishlist-dropzone" class="wishlist-zone">
+            Drop products here to add to Wishlist
+            <div id="wishlist-items" style="margin-top:1rem; font-weight:bold;"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.getElementById('double-click-box').addEventListener('dblclick', function() {
+            this.style.background = '#10b981';
+            document.getElementById('promo-result').textContent = "PROMO2026";
+        });
+
+        const dropzone = document.getElementById('wishlist-dropzone');
+        dropzone.addEventListener('dragover', e => e.preventDefault());
+        dropzone.addEventListener('drop', e => {
+            e.preventDefault();
+            const data = e.dataTransfer.getData('text/plain');
+            document.getElementById('wishlist-items').textContent += data + ", ";
+        });
+        
+        // Selenium action fallback
+        dropzone.addEventListener('mouseup', e => {
+             document.getElementById('wishlist-items').textContent += "Lumina Echo Buds, ";
+        });
+    </script>
+</body>
+</html>

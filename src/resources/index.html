@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Store | Premium Tech & Gadgets</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container" style="display:flex; justify-content:space-between; width:100%;">
+            <div class="nav-brand"><a href="index.html">Lumina.</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active" id="Home">Home</a></li>
+                <li><a href="shop.html" id="shopPageTitle" >Shop</a></li>
+                <li><a href="login.html" id="auth-link">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="hero text-center" style="padding: 4rem 1.5rem;">
+        <h1>Welcome to Lumina</h1>
+        <p>Your premium tech ecosystem.</p>
+        <a href="shop.html" class="btn btn-primary" id="shopNowBtn">Shop Now</a>
+    </section>
+    <!-- Cookie Banner for Cookie Tests -->
+    <div id="cookie-banner" style="position:fixed; bottom:0; width:100%; background:#111827; color:#fff; padding:1rem; text-align:center; display:none; z-index:9999;">
+        We use cookies to improve your experience. 
+        <button id="accept-cookies" class="btn btn-primary" style="margin-left:1rem; padding:0.2rem 1rem;">Accept</button>
+    </div>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if(!document.cookie.includes('lumina_consent=true')){
+                document.getElementById('cookie-banner').style.display = 'block';
+            }
+            document.getElementById('accept-cookies').addEventListener('click', () => {
+                document.cookie = "lumina_consent=true; max-age=86400; path=/";
+                document.getElementById('cookie-banner').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

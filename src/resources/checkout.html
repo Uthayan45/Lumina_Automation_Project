@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Lumina Store</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container" style="padding:2rem;">
+    <h1>Checkout</h1>
+
+    <div style="background:#e5e7eb; padding:1rem; margin-bottom:2rem;">
+        <h3>Important Policies</h3>
+        <a href="terms.html" id="terms-link" target="_blank" style="color:#0066cc;">
+            Read Terms & Conditions (Opens New Tab)
+        </a>
+        <br><br>
+        <button id="help-popup-btn" class="btn btn-outline" type="button"
+                onclick="window.open('terms.html', 'Help', 'width=500,height=400')">
+            Open Help Popup Window
+        </button>
+    </div>
+
+    <form id="checkout-form">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-input" required>
+        </div>
+
+        <div style="border: 1px solid #ccc; padding: 1rem; margin: 1rem 0;">
+            <label style="font-weight:bold; display:block; margin-bottom:0.5rem;">
+                Secure Payment Gateway (iframe)
+            </label>
+            <iframe src="payment.html" id="payment-iframe" width="100%" height="250" style="border:none;"></iframe>
+        </div>
+
+        <button type="submit" id="place-order-btn" class="btn btn-primary">Place Order</button>
+    </form>
+
+    <p id="order-confirmation" style="color:green; font-weight:bold; margin-top:20px;"></p>
+</div>
+
+<script>
+    document.getElementById("checkout-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const iframe = document.getElementById("payment-iframe");
+        const iframeDoc = iframe.contentWindow.document;
+
+        const paymentStatus = iframeDoc.getElementById("payment-status").textContent.trim();
+        const confirmation = document.getElementById("order-confirmation");
+
+        if (email === "") {
+            confirmation.style.color = "red";
+            confirmation.textContent = "Please enter your email.";
+            return;
+        }
+
+        if (paymentStatus === "Card Validated!") {
+            window.location.href = "success.html";
+        } else {
+            confirmation.style.color = "red";
+            confirmation.textContent = "Please validate card details before placing the order.";
+        }
+    });
+</script>
+</body>
+</html>

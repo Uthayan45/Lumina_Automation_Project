@@ -10,6 +10,7 @@
             <class name="tests.NavbarTest"/>
             <class name="tests.ShopPageTest"/>
             <class name="tests.LoginTest"/>
-            <class name="tests.FlowTest"/></classes>
+            <class name="tests.FlowTest"/>
+        </classes>
     </test>
 </suite>

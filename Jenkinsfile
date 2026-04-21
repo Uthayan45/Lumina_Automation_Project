@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK'
-        maven 'Maven'
+        jdk 'jdk-26'
+        maven 'Maven3'
     }
 
     stages {
@@ -25,12 +25,6 @@ pipeline {
     post {
         always {
             junit 'target/surefire-reports/*.xml'
-        }
-        success {
-            echo 'Tests passed'
-        }
-        failure {
-            echo 'Tests failed'
         }
     }
 }

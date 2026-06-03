@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'master',
-                    credentialsId: 'github-token',
+                    credentialsId: 'github-credentials',
                     url: 'https://github.com/Uthayan45/Lumina_Automation_Project.git'
             }
         }
@@ -26,38 +26,34 @@ pipeline {
         always {
             junit 'target/surefire-reports/*.xml'
 
-            // HTML report publish in Jenkins
-            publishHTML(target: [
-                reportDir: 'target/surefire-reports',
-                reportFiles: 'index.html,emailable-report.html',
-                reportName: 'TestNG Report',
-                keepAll: true,
-                alwaysLinkToLastBuild: true,
-                allowMissing: true
-            ])
+            archiveArtifacts artifacts: '''
+                target/surefire-reports/*.html,
+                target/surefire-reports/*.xml,
+                reports/*.pdf,
+                screenshots/*.png
+            ''', allowEmptyArchive: true
 
-            // Email send with report attachment
             emailext(
                 to: 'uthayanu490@gmail.com',
-                subject: "Jenkins Test Report - ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+                subject: "Lumina Automation Report - ${currentBuild.currentResult}",
                 body: """
-                Hi Uthayan,
+Hi Uthayan,
 
-                Test execution completed.
+Automation test execution completed.
 
-                Project: ${env.JOB_NAME}
-                Build Number: ${env.BUILD_NUMBER}
-                Status: ${currentBuild.currentResult}
+Job Name: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+Build Status: ${currentBuild.currentResult}
 
-                Jenkins Build URL:
-                ${env.BUILD_URL}
+Build URL:
+${env.BUILD_URL}
 
-                Report is attached.
+PDF report and screenshots are attached.
 
-                Regards,
-                Jenkins
-                """,
-                attachmentsPattern: 'target/surefire-reports/*.html,target/surefire-reports/*.xml',
+Regards,
+Jenkins
+""",
+                attachmentsPattern: 'reports/*.pdf,screenshots/*.png,target/surefire-reports/*.html',
                 mimeType: 'text/plain'
             )
         }

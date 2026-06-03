@@ -24,46 +24,45 @@ pipeline {
 
     post {
         always {
+            // Record Test Results in Jenkins UI
             junit 'target/surefire-reports/*.xml'
 
-            archiveArtifacts artifacts: '''
-                target/surefire-reports/*.html,
-                target/surefire-reports/*.xml,
-                reports/*.pdf,
-                screenshots/*.png
-            ''', allowEmptyArchive: true
+            // Archive artifacts so they are saved in Jenkins Dashboard
+            archiveArtifacts artifacts: 'target/surefire-reports/*.html, target/surefire-reports/*.xml, reports/*.pdf, screenshots/*.png', allowEmptyArchive: true
 
+            // Send Email using Extended Email Plugin
             emailext(
                 to: 'uthayanu490@gmail.com',
                 subject: "Lumina Automation Report - ${currentBuild.currentResult}",
+                mimeType: 'text/html',
                 body: """
-Hi Uthayan,
-
-Automation test execution completed.
-
-Job Name: ${env.JOB_NAME}
-Build Number: ${env.BUILD_NUMBER}
-Build Status: ${currentBuild.currentResult}
-
-Build URL:
-${env.BUILD_URL}
-
-PDF report and screenshots are attached.
-
-Regards,
-Jenkins
-""",
+                <html>
+                <body>
+                <p>Hi Uthayan,</p>
+                <p>Automation test execution completed.</p>
+                <br/>
+                <b>Job Name:</b> ${env.JOB_NAME}<br/>
+                <b>Build Number:</b> ${env.BUILD_NUMBER}<br/>
+                <b>Build Status:</b> <span style="color: ${currentBuild.currentResult == 'SUCCESS' ? 'green' : 'red'}">${currentBuild.currentResult}</span><br/>
+                <br/>
+                <p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                <p><i>PDF reports, HTML reports, and screenshots are attached below.</i></p>
+                <br/>
+                <p>Regards,<br/>Jenkins Automation Server</p>
+                </body>
+                </html>
+                """,
                 attachmentsPattern: 'reports/*.pdf,screenshots/*.png,target/surefire-reports/*.html',
-                mimeType: 'text/plain'
+                failOnError: false // Intha line mail-naala unga build fail aaguratha thadukkum
             )
         }
 
         success {
-            echo 'Tests passed'
+            echo 'Tests passed successfully!'
         }
 
         failure {
-            echo 'Tests failed'
+            echo 'Tests failed, please review logs/artifacts.'
         }
     }
 }
